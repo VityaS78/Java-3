@@ -1,8 +1,8 @@
 package Java3.Lesson_1.Task_3.Fruits;
 
-public class Orange extends Fruit {
+public class Apple extends Fruit{
 
-    public Orange(float weigth) {
+    public Apple(float weigth) {
         super(weigth);
     }
 
