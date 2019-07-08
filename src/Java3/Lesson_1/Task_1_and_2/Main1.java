@@ -1,6 +1,6 @@
-package Java3.Lesson_1.Task_1;
+package Java3.Lesson_1.Task_1_and_2;
 
-public class Main {
+public class Main1 {
     public static void main(String[] args) {
 
         String[] strings = new String[20];
@@ -8,8 +8,6 @@ public class Main {
         int y = 12;  // хотим поменьять местами
 
         change(strings, x, y);
-
-
     }
 
     public static void change(String[] strings, int indexX, int indexY) {

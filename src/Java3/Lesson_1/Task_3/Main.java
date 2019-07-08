@@ -7,6 +7,10 @@ import Java3.Lesson_1.Task_3.Fruits.Orange;
 public class Main {
     public static void main(String[] args) {
         Box<Apple> appleBox = new Box<>();
+
+        // если попробуем так, то IDEA ругается
+        // appleBox.add(new Orange(1.0f));
+
         Box<Orange> orangeBox = new Box<>();
         int n = 10;
         int m = 9;

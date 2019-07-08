@@ -1,4 +1,4 @@
-package Java3.Lesson_1.Task_2;
+package Java3.Lesson_1.Task_1_and_2;
 
 import java.util.ArrayList;
 
