@@ -1,11 +1,10 @@
 package Java3.Lesson_1.Task_3.Fruits;
 
-public class Apple extends Fruit{
+public class Orange extends Fruit {
 
-    public Apple(float weigth) {
+    public Orange(float weigth) {
         super(weigth);
     }
-//
 
     @Override
     public float getWeigth() {

@@ -7,6 +7,7 @@ public abstract class Fruit {
     public Fruit(float weigth) {
         this.weigth = weigth;
     }
+    //
 
     public abstract float getWeigth();
 }
