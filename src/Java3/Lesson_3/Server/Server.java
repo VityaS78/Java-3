@@ -5,12 +5,15 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server {
     private final int PORT = 8080;
     private List<ClientHandler> clients;
     private Filter filter;
-
+    private ExecutorService ex;
 
     public Server() {
         try {
@@ -18,11 +21,15 @@ public class Server {
             clients = new ArrayList<>();
             SQLAuth.connect();
             filter = new Filter();
+//            ex = Executors.newFixedThreadPool(10);
+            ex = Executors.newCachedThreadPool();
             while (true) {
+
                 System.out.println("Ожидаем подключения клиента");
                 Socket socket = serverSocket.accept();
                 System.out.println("Клиент подключился");
-                new ClientHandler(this, socket);
+//                new ClientHandler(this, socket);
+                ex.submit(new ClientHandler(this, socket));
             }
 
         } catch (IOException e) {
@@ -38,8 +45,8 @@ public class Server {
     }
 
     public synchronized boolean isNickBusy(String nick) {
-        for (ClientHandler cl:clients) {
-            if(nick.equalsIgnoreCase(cl.getName())) return true;
+        for (ClientHandler cl : clients) {
+            if (nick.equalsIgnoreCase(cl.getName())) return true;
         }
         return false;
     }
@@ -57,13 +64,13 @@ public class Server {
         if (msgFromClient.startsWith("/ToNick")) {
             String[] parts = msgFromClient.split("_");
             String nick = parts[1];
-            for (ClientHandler cl: clients) {
+            for (ClientHandler cl : clients) {
                 if (nick.equalsIgnoreCase(cl.getName())) {
                     cl.sendMessege(name + " : " + filter.filter(parts[3]));
                     return;
                 }
             }
-            for (ClientHandler cl: clients) {
+            for (ClientHandler cl : clients) {
                 if (parts[2].equalsIgnoreCase(cl.getName())) {
                     cl.sendMessege(parts[1] + "отсутсвует в чате");
                     return;

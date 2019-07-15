@@ -6,7 +6,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-public class ClientHandler {
+public class ClientHandler implements Runnable {
     private Server server;
     private Socket socket;
     private DataInputStream in;
@@ -25,16 +25,17 @@ public class ClientHandler {
             this.in = new DataInputStream(socket.getInputStream());
             this.out = new DataOutputStream(socket.getOutputStream());
             this.name = "";
-            new Thread(() -> {
-                try {
-                    authentication();
-                    readMessege();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    closeConnection();
-                }
-            }).start();
+//            new Thread(() -> {
+//                try {
+//                    authentication();
+//                    readMessege();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                } finally {
+//                    closeConnection();
+//                }
+//            }).start();
+            run();
         } catch (IOException e) {
             throw new RuntimeException("Ошибка создания обработчика");
         }
@@ -45,7 +46,7 @@ public class ClientHandler {
             String msg = in.readUTF();
             if (msg.startsWith("/auth")) {
                 String[] parts = msg.split("_");
-                String nick = SQLAuth.getNick(new String[]{parts[1],parts[2]});
+                String nick = SQLAuth.getNick(new String[]{parts[1], parts[2]});
                 if (nick != null) {
                     if (!server.isNickBusy(nick)) {
                         name = nick;
@@ -105,6 +106,18 @@ public class ClientHandler {
             out.flush();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void run() {
+        try {
+            authentication();
+            readMessege();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection();
         }
     }
 }
