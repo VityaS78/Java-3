@@ -1,5 +1,9 @@
 package Java3.Lesson_4.Task_1;
 
+
+/*
+Задание по многопоточности лежит в пакете Lesson_3, по базам данных там же.
+ */
 public class ABC {
     String state;
 
