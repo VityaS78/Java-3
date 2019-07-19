@@ -1,5 +1,7 @@
 package Java3.Lesson_3.Server;
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -14,6 +16,7 @@ public class Server {
     private List<ClientHandler> clients;
     private Filter filter;
     private ExecutorService ex;
+    private static final Logger LOGGER = Logger.getLogger(Server.class.getName());
 
     public Server() {
         try {
@@ -28,12 +31,14 @@ public class Server {
                 System.out.println("Ожидаем подключения клиента");
                 Socket socket = serverSocket.accept();
                 System.out.println("Клиент подключился");
+                LOGGER.info("Клиент подключился");
 //                new ClientHandler(this, socket);
                 ex.submit(new ClientHandler(this, socket));
             }
 
         } catch (IOException e) {
             System.out.println("Ошибка сервера");
+            LOGGER.error("ERROR - Ошибка сервера" + e);
         } finally {
         }
     }
@@ -53,10 +58,12 @@ public class Server {
 
     public synchronized void addClient(ClientHandler cl) {
         clients.add(cl);
+        LOGGER.info(cl.getName() + "добавлен в список");
     }
 
     public synchronized void removeClient(ClientHandler cl) {
         clients.remove(cl);
+        LOGGER.info(cl.getName() + "удален из списка");
     }
 
     public synchronized void distributeMsg(String msgFromClient, String name) {

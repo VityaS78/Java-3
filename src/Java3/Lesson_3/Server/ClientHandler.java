@@ -1,6 +1,8 @@
 package Java3.Lesson_3.Server;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -11,6 +13,7 @@ public class ClientHandler implements Runnable {
     private Socket socket;
     private DataInputStream in;
     private DataOutputStream out;
+    private static final Logger LOGGER = Logger.getLogger(ClientHandler.class.getName());
 
     private String name;
 
@@ -37,6 +40,7 @@ public class ClientHandler implements Runnable {
 //            }).start();
             run();
         } catch (IOException e) {
+            LOGGER.error("ERROR - Ошибка создания обработчика" + e);
             throw new RuntimeException("Ошибка создания обработчика");
         }
     }
@@ -85,6 +89,7 @@ public class ClientHandler implements Runnable {
             out.close();
             socket.close();
         } catch (IOException e) {
+            LOGGER.error("ERROR" + e);
             e.printStackTrace();
         }
 //        try {
@@ -105,6 +110,7 @@ public class ClientHandler implements Runnable {
             out.writeUTF(msg);
             out.flush();
         } catch (IOException e) {
+            LOGGER.error("ERROR" + e);
             e.printStackTrace();
         }
     }
@@ -115,6 +121,7 @@ public class ClientHandler implements Runnable {
             authentication();
             readMessege();
         } catch (IOException e) {
+            LOGGER.error("ERROR" + e);
             e.printStackTrace();
         } finally {
             closeConnection();
